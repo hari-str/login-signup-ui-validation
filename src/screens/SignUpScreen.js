@@ -18,19 +18,24 @@ const SignUpScreen = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    mode: "onTouched",
+  });
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => alert(JSON.stringify(data));
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  //check password event
+  const password = watch("password");
   return (
     <Grid
       sx={{
         maxWidth: "430px",
-        border: "1px solid lightgray",
+        // border: "1px solid lightgray",
         padding: "1rem",
         minHeight: "500px",
         borderRadius: "4px",
@@ -42,7 +47,7 @@ const SignUpScreen = () => {
         fontWeight={"700"}
         sx={{ fontSize: "2rem", marginBottom: "2rem" }}
       >
-        Signup
+        Create new account.
       </Typography>
       <Box
         component="form"
@@ -50,17 +55,29 @@ const SignUpScreen = () => {
         noValidate
         autoComplete="off"
       >
-        <TextField
-          label="Name"
-          variant="outlined"
-          sx={{ width: "100%", marginBottom: "1rem" }}
-          {...register("name", { required: "Name is required!" })}
-          error={Boolean(errors.name)}
-          helperText={errors.name?.message}
-        />
+        <Box display="flex" sx={{ columnGap: "1rem" }}>
+          <TextField
+            label="FirstName"
+            variant="outlined"
+            sx={{ width: "100%", marginBottom: "1rem" }}
+            {...register("firstname", { required: "firstname is required!" })}
+            error={Boolean(errors.firstname)}
+            helperText={errors.firstname?.message}
+          />
+          <TextField
+            label="LastName"
+            variant="outlined"
+            sx={{ width: "100%", marginBottom: "1rem" }}
+            {...register("lastname", { required: "lastname is required!" })}
+            error={Boolean(errors.lastname)}
+            helperText={errors.lastname?.message}
+          />
+        </Box>
+
         <TextField
           label="Mobile"
           type="number"
+          minLength="10"
           variant="outlined"
           sx={{ width: "100%", marginBottom: "1rem" }}
           {...register("mobile", { required: "mobile is required!" })}
@@ -93,12 +110,22 @@ const SignUpScreen = () => {
                   onClick={handleClickShowPassword}
                   edge="end"
                 >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
             }
             label="Password"
-            {...register("password", { required: "password is required!" })}
+            {...register("password", {
+              required: "password is required!",
+              minLength: {
+                value: 8,
+                message: "Minimum Required length is 8",
+              },
+              maxLength: {
+                value: 20,
+                message: "Maximum Required lenth is 20",
+              },
+            })}
           />
           <FormHelperText>{errors.password?.message}</FormHelperText>
         </FormControl>
@@ -121,13 +148,19 @@ const SignUpScreen = () => {
                   onClick={handleClickShowPassword}
                   edge="end"
                 >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
             }
             label="Confirm Password"
+            onPaste={(e) => {
+              e.preventDefault();
+              return false;
+            }}
             {...register("cpassword", {
               required: "confirm password is required!",
+              validate: (value) =>
+                value === password || "The password do not match!",
             })}
           />
           <FormHelperText>{errors.cpassword?.message}</FormHelperText>
@@ -135,14 +168,18 @@ const SignUpScreen = () => {
         <Button
           type="submit"
           variant="contained"
+          size="large"
           sx={{ width: "100%", marginTop: "1rem" }}
         >
-          Register
+          Create account
         </Button>
       </Box>
 
-      <Typography textAlign="center" sx={{ my: 3 }}>
-        Already have an account ?<Link to="/">Login</Link>
+      <Typography textAlign="center" fontSize={14} sx={{ my: 3 }}>
+        Already have an account ?
+        <Link to="/" className="login_link">
+          Login
+        </Link>
       </Typography>
     </Grid>
   );

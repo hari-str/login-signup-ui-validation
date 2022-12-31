@@ -5,8 +5,6 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import IconButton from "@mui/material/IconButton";
@@ -14,6 +12,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { FormHelperText } from "@mui/material";
+import GoogleLogo from "../assets/google-logo.png";
 
 const LoginScreen = () => {
   const {
@@ -23,7 +22,7 @@ const LoginScreen = () => {
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => alert(JSON.stringify(data));
   // showpassword
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -31,7 +30,7 @@ const LoginScreen = () => {
     <Grid
       sx={{
         maxWidth: "390px",
-        border: "1px solid lightgray",
+        // border: "1px solid lightgray",
         padding: "1rem",
         minHeight: "500px",
         borderRadius: "4px",
@@ -43,13 +42,14 @@ const LoginScreen = () => {
         fontWeight={"700"}
         sx={{ fontSize: "2rem", marginBottom: "2rem" }}
       >
-        Login
+        Welcome back!
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
           label="Email"
           type="email"
           variant="outlined"
+          size="medium"
           sx={{ marginBottom: "1rem" }}
           fullWidth
           {...register("email", { required: "Email is required!" })}
@@ -59,6 +59,7 @@ const LoginScreen = () => {
 
         <FormControl
           variant="outlined"
+          size="medium"
           fullWidth
           error={Boolean(errors.password)}
         >
@@ -75,7 +76,7 @@ const LoginScreen = () => {
                   onClick={handleClickShowPassword}
                   edge="end"
                 >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
             }
@@ -92,30 +93,46 @@ const LoginScreen = () => {
         <Button
           type="submit"
           variant="contained"
+          size="large"
           sx={{ width: "100%", marginTop: "1rem" }}
         >
           Login
         </Button>
       </form>
 
-      <Typography textAlign="center" sx={{ mb: 2, mt: 1 }}>
-        Don't have an account ?<Link to="/signup">Signup</Link>
+      <Typography textAlign="center" fontSize={14} sx={{ mb: 2, mt: 1 }}>
+        Don't have an account ?
+        <Link to="/signup" className="signup_link">
+          Signup
+        </Link>
       </Typography>
-      <div className="or">OR</div>
-      <Button
-        sx={{ width: "100%", marginTop: "1rem" }}
-        startIcon={<GoogleIcon />}
-        variant="outlined"
+      <div className="or">or</div>
+
+      {/* social button */}
+
+      <Grid
+        container
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        mt={2}
+        sx={{
+          padding: "0.6rem",
+          border: "1px solid lightgray",
+          borderRadius: 1,
+          cursor: "pointer",
+          "&:hover": {
+            backgroundColor: "#f4f4f4",
+          },
+        }}
       >
-        Google
-      </Button>
-      <Button
-        sx={{ width: "100%", marginTop: "1rem" }}
-        startIcon={<FacebookIcon />}
-        variant="outlined"
-      >
-        Facebook
-      </Button>
+        <Grid sx={{ flex: "1" }}>
+          <img src={GoogleLogo} alt="GoogleLogo" width={20} />
+        </Grid>
+        <Grid sx={{ flex: "9" }} container justifyContent="center">
+          <Typography noWrap>Login with Google</Typography>
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

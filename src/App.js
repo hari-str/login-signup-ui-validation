@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import LoginScreen from "./components/LoginScreen";
-import SignUpScreen from "./components/SignUpScreen";
+import LoginScreen from "./screens/LoginScreen";
+import SignUpScreen from "./screens/SignUpScreen";
 import "./App.css";
 import Grid from "@mui/material/Grid";
 

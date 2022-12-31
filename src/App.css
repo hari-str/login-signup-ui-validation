@@ -6,12 +6,13 @@
 
 .forgot_pwd {
   text-decoration: none;
-  color: #a0a0a0;
+  color: #1a1a1a;
+  font-size: 14px;
 }
-
 .forgot_pwd:hover {
   text-decoration: underline;
 }
+
 .or {
   position: relative;
   text-align: center;
@@ -37,4 +38,11 @@
   right: 0;
   top: 10px;
   background-color: #e0e0e0;
+}
+
+.signup_link,
+.login_link {
+  color: #357ae8;
+  font-size: 14px;
+  margin-left: 7px;
 }
