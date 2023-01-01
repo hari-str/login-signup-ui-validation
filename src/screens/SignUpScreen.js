@@ -57,7 +57,7 @@ const SignUpScreen = () => {
       >
         <Box display="flex" sx={{ columnGap: "1rem" }}>
           <TextField
-            label="FirstName"
+            label="FirstName*"
             variant="outlined"
             sx={{ width: "100%", marginBottom: "1rem" }}
             {...register("firstname", { required: "firstname is required!" })}
@@ -65,7 +65,7 @@ const SignUpScreen = () => {
             helperText={errors.firstname?.message}
           />
           <TextField
-            label="LastName"
+            label="LastName*"
             variant="outlined"
             sx={{ width: "100%", marginBottom: "1rem" }}
             {...register("lastname", { required: "lastname is required!" })}
@@ -85,11 +85,17 @@ const SignUpScreen = () => {
           helperText={errors.mobile?.message}
         />
         <TextField
-          label="Email"
+          label="Email*"
           type="email"
           variant="outlined"
           sx={{ width: "100%", marginBottom: "1rem" }}
-          {...register("email", { required: "email is required!" })}
+          {...register("email", {
+            required: "email is required!",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "invalid email address",
+            },
+          })}
           error={Boolean(errors.email)}
           helperText={errors.email?.message}
         />
@@ -99,7 +105,9 @@ const SignUpScreen = () => {
           error={Boolean(errors.password)}
           sx={{ marginBottom: "1rem" }}
         >
-          <InputLabel htmlFor="outline-adornment-password">Password</InputLabel>
+          <InputLabel htmlFor="outline-adornment-password">
+            Password*
+          </InputLabel>
           <OutlinedInput
             id="outline-adornment-password"
             type={showPassword ? "text" : "password"}
@@ -117,6 +125,11 @@ const SignUpScreen = () => {
             label="Password"
             {...register("password", {
               required: "password is required!",
+              pattern: {
+                value: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
+                message:
+                  "password should contain atleast one number and one special character",
+              },
               minLength: {
                 value: 8,
                 message: "Minimum Required length is 8",
@@ -136,7 +149,7 @@ const SignUpScreen = () => {
           sx={{ marginBottom: "1rem" }}
         >
           <InputLabel htmlFor="outlined-adornment-password">
-            Confirm Password
+            Confirm Password*
           </InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"

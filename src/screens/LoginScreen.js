@@ -52,7 +52,13 @@ const LoginScreen = () => {
           size="medium"
           sx={{ marginBottom: "1rem" }}
           fullWidth
-          {...register("email", { required: "Email is required!" })}
+          {...register("email", {
+            required: "Email is required!",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "invalid email address",
+            },
+          })}
           error={Boolean(errors.email)}
           helperText={errors.email?.message}
         />
