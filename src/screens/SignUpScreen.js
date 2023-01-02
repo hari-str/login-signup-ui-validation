@@ -13,6 +13,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { useForm } from "react-hook-form";
 import { FormHelperText } from "@mui/material";
+import { useTheme } from "@mui/material";
 
 const SignUpScreen = () => {
   const {
@@ -26,175 +27,205 @@ const SignUpScreen = () => {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  //muitheme
+  const { palette } = useTheme();
+
   const onSubmit = (data) => alert(JSON.stringify(data));
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   //check password event
   const password = watch("password");
+
   return (
-    <Grid
-      sx={{
-        maxWidth: "430px",
-        // border: "1px solid lightgray",
-        padding: "1rem",
-        minHeight: "500px",
-        borderRadius: "4px",
-      }}
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      backgroundColor={palette.background.alt}
     >
-      <Typography
-        variant="h4"
-        textAlign={"center"}
-        fontWeight={"700"}
-        sx={{ fontSize: "2rem", marginBottom: "2rem" }}
+      <Grid
+        sx={{
+          maxWidth: "430px",
+          // border: "1px solid lightgray",
+          padding: "1rem",
+          minHeight: "500px",
+          borderRadius: "4px",
+        }}
       >
-        Create new account.
-      </Typography>
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-        autoComplete="off"
-      >
-        <Box display="flex" sx={{ columnGap: "1rem" }}>
+        <Typography
+          variant="h4"
+          textAlign={"center"}
+          fontWeight={"700"}
+          sx={{
+            fontSize: "2rem",
+            marginBottom: "2rem",
+            color: palette.neutral.light,
+          }}
+        >
+          Create new account.
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          autoComplete="off"
+        >
+          <Box display="flex" sx={{ columnGap: "1rem" }}>
+            <TextField
+              label="FirstName*"
+              variant="outlined"
+              sx={{ width: "100%", marginBottom: "1rem" }}
+              {...register("firstname", { required: "firstname is required!" })}
+              error={Boolean(errors.firstname)}
+              helperText={errors.firstname?.message}
+            />
+            <TextField
+              label="LastName*"
+              variant="outlined"
+              sx={{ width: "100%", marginBottom: "1rem" }}
+              {...register("lastname", { required: "lastname is required!" })}
+              error={Boolean(errors.lastname)}
+              helperText={errors.lastname?.message}
+            />
+          </Box>
+
           <TextField
-            label="FirstName*"
+            label="Mobile"
+            type="number"
+            minLength="10"
             variant="outlined"
             sx={{ width: "100%", marginBottom: "1rem" }}
-            {...register("firstname", { required: "firstname is required!" })}
-            error={Boolean(errors.firstname)}
-            helperText={errors.firstname?.message}
+            {...register("mobile", { required: "mobile is required!" })}
+            error={Boolean(errors.mobile)}
+            helperText={errors.mobile?.message}
           />
           <TextField
-            label="LastName*"
+            label="Email*"
+            type="email"
             variant="outlined"
             sx={{ width: "100%", marginBottom: "1rem" }}
-            {...register("lastname", { required: "lastname is required!" })}
-            error={Boolean(errors.lastname)}
-            helperText={errors.lastname?.message}
+            {...register("email", {
+              required: "email is required!",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "invalid email address",
+              },
+            })}
+            error={Boolean(errors.email)}
+            helperText={errors.email?.message}
           />
+          <FormControl
+            variant="outlined"
+            fullWidth
+            error={Boolean(errors.password)}
+            sx={{ marginBottom: "1rem" }}
+          >
+            <InputLabel htmlFor="outline-adornment-password">
+              Password*
+            </InputLabel>
+            <OutlinedInput
+              id="outline-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+              {...register("password", {
+                required: "password is required!",
+                pattern: {
+                  value:
+                    /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
+                  message:
+                    "password should contain atleast one number and one special character",
+                },
+                minLength: {
+                  value: 8,
+                  message: "Minimum Required length is 8",
+                },
+                maxLength: {
+                  value: 20,
+                  message: "Maximum Required lenth is 20",
+                },
+              })}
+            />
+            <FormHelperText>{errors.password?.message}</FormHelperText>
+          </FormControl>
+          <FormControl
+            variant="outlined"
+            fullWidth
+            error={Boolean(errors.cpassword)}
+            sx={{ marginBottom: "1rem" }}
+          >
+            <InputLabel htmlFor="outlined-adornment-password">
+              Confirm Password*
+            </InputLabel>
+            <OutlinedInput
+              id="outlined-adornment-password"
+              type={showPassword ? "text" : "password"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Confirm Password"
+              onPaste={(e) => {
+                e.preventDefault();
+                return false;
+              }}
+              {...register("cpassword", {
+                required: "confirm password is required!",
+                validate: (value) =>
+                  value === password || "The password do not match!",
+              })}
+            />
+            <FormHelperText>{errors.cpassword?.message}</FormHelperText>
+          </FormControl>
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            sx={{
+              width: "100%",
+              marginTop: "1rem",
+
+              "&:hover": {
+                color: palette.primary.dark,
+                cursor: "pointer",
+                backgroundColor: palette.primary.light,
+              },
+            }}
+          >
+            Create account
+          </Button>
         </Box>
 
-        <TextField
-          label="Mobile"
-          type="number"
-          minLength="10"
-          variant="outlined"
-          sx={{ width: "100%", marginBottom: "1rem" }}
-          {...register("mobile", { required: "mobile is required!" })}
-          error={Boolean(errors.mobile)}
-          helperText={errors.mobile?.message}
-        />
-        <TextField
-          label="Email*"
-          type="email"
-          variant="outlined"
-          sx={{ width: "100%", marginBottom: "1rem" }}
-          {...register("email", {
-            required: "email is required!",
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: "invalid email address",
-            },
-          })}
-          error={Boolean(errors.email)}
-          helperText={errors.email?.message}
-        />
-        <FormControl
-          variant="outlined"
-          fullWidth
-          error={Boolean(errors.password)}
-          sx={{ marginBottom: "1rem" }}
+        <Typography
+          textAlign="center"
+          fontSize={14}
+          sx={{ my: 3, color: palette.neutral.main }}
         >
-          <InputLabel htmlFor="outline-adornment-password">
-            Password*
-          </InputLabel>
-          <OutlinedInput
-            id="outline-adornment-password"
-            type={showPassword ? "text" : "password"}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  edge="end"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
-            {...register("password", {
-              required: "password is required!",
-              pattern: {
-                value: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
-                message:
-                  "password should contain atleast one number and one special character",
-              },
-              minLength: {
-                value: 8,
-                message: "Minimum Required length is 8",
-              },
-              maxLength: {
-                value: 20,
-                message: "Maximum Required lenth is 20",
-              },
-            })}
-          />
-          <FormHelperText>{errors.password?.message}</FormHelperText>
-        </FormControl>
-        <FormControl
-          variant="outlined"
-          fullWidth
-          error={Boolean(errors.cpassword)}
-          sx={{ marginBottom: "1rem" }}
-        >
-          <InputLabel htmlFor="outlined-adornment-password">
-            Confirm Password*
-          </InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            type={showPassword ? "text" : "password"}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  edge="end"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Confirm Password"
-            onPaste={(e) => {
-              e.preventDefault();
-              return false;
-            }}
-            {...register("cpassword", {
-              required: "confirm password is required!",
-              validate: (value) =>
-                value === password || "The password do not match!",
-            })}
-          />
-          <FormHelperText>{errors.cpassword?.message}</FormHelperText>
-        </FormControl>
-        <Button
-          type="submit"
-          variant="contained"
-          size="large"
-          sx={{ width: "100%", marginTop: "1rem" }}
-        >
-          Create account
-        </Button>
-      </Box>
-
-      <Typography textAlign="center" fontSize={14} sx={{ my: 3 }}>
-        Already have an account ?
-        <Link to="/" className="login_link">
-          Login
-        </Link>
-      </Typography>
-    </Grid>
+          Already have an account ?
+          <Link to="/" style={{ marginLeft: 5, color: palette.primary.main }}>
+            Login
+          </Link>
+        </Typography>
+      </Grid>
+    </Box>
   );
 };
 

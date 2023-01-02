@@ -1,18 +1,28 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
 import LoginScreen from "./screens/LoginScreen";
+import { useState } from "react";
 import SignUpScreen from "./screens/SignUpScreen";
 import "./App.css";
-import Grid from "@mui/material/Grid";
+import { themeSetting } from "./theme";
+import { createTheme, ThemeProvider } from "@mui/material";
+import Navbar from "./components/Navbar";
 
 const App = () => {
+  const [mode, setMode] = useState("light");
+
+  const theme = useMemo(() => createTheme(themeSetting(mode)), [mode]);
+
   return (
-    <Grid container justifyContent="center" alignItems="center" height="100vh">
-      <Routes>
-        <Route path="/" element={<LoginScreen />} exact />
-        <Route path="/signup" element={<SignUpScreen />} exact />
-      </Routes>
-    </Grid>
+    <div className="app">
+      <ThemeProvider theme={theme}>
+        <Navbar setMode={setMode} mode={mode} />
+        <Routes>
+          <Route path="/" element={<LoginScreen />} exact />
+          <Route path="/signup" element={<SignUpScreen />} exact />
+        </Routes>
+      </ThemeProvider>
+    </div>
   );
 };
 
