@@ -5,7 +5,7 @@ import { useState } from "react";
 import SignUpScreen from "./screens/SignUpScreen";
 import "./App.css";
 import { themeSetting } from "./theme";
-import { createTheme, ThemeProvider } from "@mui/material";
+import { Box, createTheme, ThemeProvider } from "@mui/material";
 import Navbar from "./components/Navbar";
 
 const App = () => {
@@ -14,7 +14,7 @@ const App = () => {
   const theme = useMemo(() => createTheme(themeSetting(mode)), [mode]);
 
   return (
-    <div className="app">
+    <Box display="flex" height="100vh" sx={{ flexDirection: "column" }}>
       <ThemeProvider theme={theme}>
         <Navbar setMode={setMode} mode={mode} />
         <Routes>
@@ -22,7 +22,7 @@ const App = () => {
           <Route path="/signup" element={<SignUpScreen />} exact />
         </Routes>
       </ThemeProvider>
-    </div>
+    </Box>
   );
 };
 

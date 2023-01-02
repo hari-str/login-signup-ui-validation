@@ -31,18 +31,12 @@ const LoginScreen = () => {
   const { palette } = useTheme();
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      height="100vh"
-      backgroundColor={palette.background.alt}
-    >
+    <Box backgroundColor={palette.background.alt} sx={{ flex: 1 }}>
       <Grid
         sx={{
           maxWidth: "390px",
+          margin: "0 auto",
           padding: "1rem",
-          minHeight: "500px",
           borderRadius: "4px",
         }}
       >
@@ -116,21 +110,22 @@ const LoginScreen = () => {
             </Link>
           </Typography>
           <Button
+            fullWidth
             type="submit"
             variant="contained"
             size="large"
             sx={{
-              width: "100%",
+              fontWeight: 700,
               marginTop: "1rem",
-
+              color: palette.background.alt,
               "&:hover": {
-                color: palette.primary.dark,
-                cursor: "pointer",
+                color: palette.primary.main,
                 backgroundColor: palette.primary.light,
+                cursor: "pointer",
               },
             }}
           >
-            Login
+            Log in
           </Button>
         </form>
 
