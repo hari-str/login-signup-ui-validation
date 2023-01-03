@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -12,10 +12,10 @@ import InputAdornment from "@mui/material/InputAdornment";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import { useForm } from "react-hook-form";
-import { FormHelperText } from "@mui/material";
-import { useTheme } from "@mui/material";
+import { FormHelperText, useTheme } from "@mui/material";
 
 const SignUpScreen = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -30,7 +30,13 @@ const SignUpScreen = () => {
   //muitheme
   const { palette } = useTheme();
 
-  const onSubmit = (data) => alert(JSON.stringify(data));
+  const onSubmit = (data) => {
+    alert("Register Successfully");
+    console.log(data);
+    if (data) {
+      navigate("/");
+    }
+  };
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   //check password event

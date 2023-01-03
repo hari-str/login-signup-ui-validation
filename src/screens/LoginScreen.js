@@ -11,8 +11,9 @@ import InputLabel from "@mui/material/InputLabel";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import OutlinedInput from "@mui/material/OutlinedInput";
+import FormHelperText from "@mui/material/FormHelperText";
+import { useTheme } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { FormHelperText, useTheme } from "@mui/material";
 import GoogleLogo from "../assets/google-logo.png";
 
 const LoginScreen = () => {
@@ -23,7 +24,10 @@ const LoginScreen = () => {
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data) => alert(JSON.stringify(data));
+  const onSubmit = (data) => {
+    alert("Login Successfully");
+    localStorage.setItem("user", JSON.stringify(data));
+  };
   // showpassword
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -103,11 +107,14 @@ const LoginScreen = () => {
             textAlign="end"
             sx={{
               my: 1,
+              color: palette.neutral.main,
+              "&:hover": {
+                textDecoration: "underline",
+                cursor: "pointer",
+              },
             }}
           >
-            <Link to="/" style={{ color: palette.neutral.main }}>
-              Forgot password?
-            </Link>
+            Forgot password?
           </Typography>
           <Button
             fullWidth
@@ -128,7 +135,6 @@ const LoginScreen = () => {
             Log in
           </Button>
         </form>
-
         <Typography
           textAlign="center"
           fontSize={14}

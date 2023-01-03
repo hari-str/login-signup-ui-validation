@@ -5,6 +5,11 @@ import { DarkMode, LightMode } from "@mui/icons-material";
 const Navbar = ({ setMode, mode }) => {
   const theme = useTheme();
 
+  //switch theme
+  const switchTheme = () => {
+    setMode(mode === "light" ? "dark" : "light");
+  };
+
   return (
     <Box sx={{ backgroundColor: theme.palette.background.alt }}>
       <Box
@@ -12,9 +17,7 @@ const Navbar = ({ setMode, mode }) => {
         justifyContent="flex-end"
         sx={{ maxWidth: "1140px", margin: "0 auto", padding: "1rem" }}
       >
-        <IconButton
-          onClick={() => setMode(mode === "light" ? "dark" : "light")}
-        >
+        <IconButton onClick={switchTheme}>
           {theme.palette.mode === "dark" ? (
             <DarkMode sx={{ fontSize: "25px" }} />
           ) : (
