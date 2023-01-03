@@ -20,13 +20,15 @@ const LoginScreen = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (data) => {
+  const handleLogin = (data) => {
     alert("Login Successfully");
     localStorage.setItem("user", JSON.stringify(data));
+    reset();
   };
   // showpassword
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -56,14 +58,15 @@ const LoginScreen = () => {
         >
           Welcome back!
         </Typography>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(handleLogin)} noValidate>
           <TextField
+            fullWidth
             label="Email"
             type="email"
+            margin="normal"
             variant="outlined"
             size="medium"
             sx={{ marginBottom: "1rem" }}
-            fullWidth
             {...register("email", {
               required: "Email is required!",
               pattern: {
@@ -71,7 +74,7 @@ const LoginScreen = () => {
                 message: "invalid email address",
               },
             })}
-            error={Boolean(errors.email)}
+            error={Boolean(errors?.email)}
             helperText={errors.email?.message}
           />
 
@@ -79,7 +82,7 @@ const LoginScreen = () => {
             variant="outlined"
             size="medium"
             fullWidth
-            error={Boolean(errors.password)}
+            error={Boolean(errors?.password)}
           >
             <InputLabel htmlFor="outlined-adornment-password">
               Password

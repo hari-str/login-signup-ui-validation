@@ -30,7 +30,7 @@ const SignUpScreen = () => {
   //muitheme
   const { palette } = useTheme();
 
-  const onSubmit = (data) => {
+  const handleRegister = (data) => {
     alert("Register Successfully");
     console.log(data);
     if (data) {
@@ -67,7 +67,7 @@ const SignUpScreen = () => {
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(handleRegister)}
           noValidate
           autoComplete="off"
         >
